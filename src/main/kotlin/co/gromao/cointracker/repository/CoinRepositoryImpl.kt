@@ -50,7 +50,7 @@ class CoinRepositoryImpl(
         } else {
             updateFromDto(dto)
         }
-        val criteria = Criteria.`where`("_id").`is`(dto.symbol)
+        val criteria = Criteria.`where`("_id").`is`(dto.id)
         val query = Query(criteria)
 
         return Pair.of(query, update)
@@ -71,6 +71,7 @@ class CoinRepositoryImpl(
 
     private fun updateFromDto(dto: CoinDto): Update {
         val update = Update()
+        update.set(Coin.FIELD_SYMBOL, dto.symbol)
         update.set(Coin.FIELD_NAME, dto.name)
         update.set(Coin.FIELD_IS_ACTIVE, dto.isActive == ACTIVE_COIN_VALUE)
 

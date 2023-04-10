@@ -14,8 +14,8 @@ class CoinMarketScheduler(
 ) {
 
     companion object {
-        private const val COINS_LIMIT = 200
-        private const val DELAY_VALUE = (10 * 60 * 1000).toLong()
+        private const val COINS_LIMIT = 500
+        private const val DELAY_VALUE = (30 * 60 * 1000).toLong()
         private val LOGGER = LoggerFactory.getLogger(CoinMarketScheduler::class.java)
     }
 
@@ -41,8 +41,8 @@ class CoinMarketScheduler(
             if (CollectionUtils.isEmpty(coins)) {
                 isTaskDone = true
             } else {
-                val symbols = coins.map { it.id }.toSet()
-                val coinMarketDtos = client.getCoinsValuesFor(symbols)
+                val coinIds = coins.map { it.id }.toSet()
+                val coinMarketDtos = client.getCoinsValuesFor(coinIds)
 
                 repository.updateBatchValues(coinMarketDtos)
                 offset += COINS_LIMIT
@@ -51,11 +51,20 @@ class CoinMarketScheduler(
     }
 
     private fun updateCoinInfo() {
-        val coins = client.getCoinsList()
+        var offsetIndex = 0
+        var isTaskDone = false
 
-        if (!CollectionUtils.isEmpty(coins)) {
-            repository.updateBatch(coins)
+        while (!isTaskDone) {
+            val coins = client.getCoinsList(offsetIndex)
+
+            if (coins.isNullOrEmpty()) {
+                isTaskDone = true
+            } else {
+                repository.updateBatch(coins)
+                offsetIndex++
+            }
         }
+
     }
 
 }

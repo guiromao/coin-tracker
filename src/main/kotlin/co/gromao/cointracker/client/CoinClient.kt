@@ -27,33 +27,40 @@ class CoinClient(
 ) {
 
     companion object {
-        private const val COINS_LIMIT = 500
+        private const val COINS_LIMIT = 1000
         private val LOGGER = LoggerFactory.getLogger(CoinClient::class.java)
     }
 
-    fun getCoinsList(): Set<CoinDto> {
-        val getCoinsUrl = "$baseUrl$coinsListPath?limit=$COINS_LIMIT"
+    fun getCoinsList(offsetIndex: Int): Set<CoinDto> {
+        val start = offsetIndex * COINS_LIMIT + 1
+        val getCoinsUrl = "$baseUrl$coinsListPath?start=${start}&limit=$COINS_LIMIT"
         val httpEntity = HttpEntity<String>(authHeaders())
 
         return try {
             restTemplate.exchange(getCoinsUrl, HttpMethod.GET, httpEntity, InformationDto::class.java)
                 .body?.data ?: emptySet()
         } catch (e: RestClientException) {
-            LOGGER.error("Error getting updated Coins information")
+            LOGGER.error("Error getting updated Coins information with error: {}", e)
             emptySet()
         }
     }
 
-    fun getCoinsValuesFor(coinsSymbols: Set<String>): Set<CoinMarketDto> {
-        val coinsSymbolsStr = coinsSymbols.joinToString(",")
-        val coinsValuesUrl = "$baseUrl$coinsValuesPath?symbol=$coinsSymbolsStr"
+    fun getCoinsValuesFor(coinIds: Set<Long>): Set<CoinMarketDto> {
+        val coinIdsStr = coinIds.joinToString(",")
+        val coinsValuesUrl = "$baseUrl$coinsValuesPath?id=$coinIdsStr"
         val httpEntity = HttpEntity<String>(authHeaders())
 
         return try {
-            restTemplate.exchange(coinsValuesUrl, HttpMethod.GET, httpEntity, ValuesDto::class.java)
-                .body?.data?.values?.toSet() ?: emptySet()
+            val data = restTemplate.exchange(coinsValuesUrl, HttpMethod.GET, httpEntity, ValuesDto::class.java)
+                .body?.data
+
+            return if (!data.isNullOrEmpty()) {
+                data.values.toSet()
+            } else {
+                emptySet()
+            }
         } catch (e: RestClientException) {
-            LOGGER.error("Error getting updated Coins values")
+            LOGGER.error("Error getting updated Coins values with message: {}", e)
             emptySet()
         }
     }

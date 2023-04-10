@@ -9,7 +9,9 @@ import java.time.Instant
 data class Coin(
 
     @Id
-    val id: String,
+    val id: Long,
+
+    val symbol: String,
 
     @Field(FIELD_NAME)
     val name: String,
@@ -39,6 +41,7 @@ data class Coin(
 
     companion object {
         const val COIN_COLLECTION = "coin"
+        const val FIELD_SYMBOL = "symbol"
         const val FIELD_NAME = "name"
         const val FIELD_IS_ACTIVE = "isActive"
         const val FIELD_VALUE_IN_DOLLARS =  "valueInDollars"
