@@ -31,9 +31,6 @@ data class Coin(
     @Field(FIELD_MAX_SUPPLY)
     val maxSupply: Double? = 0.0,
 
-    @Field(FIELD_HAS_INFINITE_SUPPLY)
-    val hasInfiniteSupply: Boolean? = null,
-
     @Field(FIELD_LAST_UPDATED_AT)
     val lastUpdatedAt: Instant? = null
 
@@ -48,7 +45,6 @@ data class Coin(
         const val FIELD_CIRCULATING_SUPPLY = "circulatingSupply"
         const val FIELD_TOTAL_SUPPLY = "totalSupply"
         const val FIELD_MAX_SUPPLY = "maxSupply"
-        const val FIELD_HAS_INFINITE_SUPPLY = "hasInfiniteSupply"
         const val FIELD_LAST_UPDATED_AT = "lastUpdatedAt"
     }
 

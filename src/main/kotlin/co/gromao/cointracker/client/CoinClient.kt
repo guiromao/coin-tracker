@@ -31,7 +31,7 @@ class CoinClient(
         private val LOGGER = LoggerFactory.getLogger(CoinClient::class.java)
     }
 
-    fun getCoinsList(offsetIndex: Int): Set<CoinDto> {
+    fun getCoinsSet(offsetIndex: Int): Set<CoinDto> {
         val start = offsetIndex * COINS_LIMIT + 1
         val getCoinsUrl = "$baseUrl$coinsListPath?start=${start}&limit=$COINS_LIMIT"
         val httpEntity = HttpEntity<String>(authHeaders())

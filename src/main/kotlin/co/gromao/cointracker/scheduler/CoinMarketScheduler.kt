@@ -5,7 +5,6 @@ import co.gromao.cointracker.repository.CoinRepository
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import org.springframework.util.CollectionUtils
 
 @Component
 class CoinMarketScheduler(
@@ -38,7 +37,7 @@ class CoinMarketScheduler(
         while (!isTaskDone) {
             val coins = repository.fetchByOffsetAndLimit(offset, COINS_LIMIT)
 
-            if (CollectionUtils.isEmpty(coins)) {
+            if (coins.isNullOrEmpty()) {
                 isTaskDone = true
             } else {
                 val coinIds = coins.map { it.id }.toSet()
@@ -55,7 +54,7 @@ class CoinMarketScheduler(
         var isTaskDone = false
 
         while (!isTaskDone) {
-            val coins = client.getCoinsList(offsetIndex)
+            val coins = client.getCoinsSet(offsetIndex)
 
             if (coins.isNullOrEmpty()) {
                 isTaskDone = true
@@ -64,7 +63,6 @@ class CoinMarketScheduler(
                 offsetIndex++
             }
         }
-
     }
 
 }
