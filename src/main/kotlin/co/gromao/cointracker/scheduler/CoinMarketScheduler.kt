@@ -1,5 +1,6 @@
 package co.gromao.cointracker.scheduler
 
+import co.gromao.cointracker.client.CoinClient
 import co.gromao.cointracker.repository.CoinRepository
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -14,10 +15,11 @@ class CoinMarketScheduler(
 
     companion object {
         private const val COINS_LIMIT = 200
+        private const val DELAY_VALUE = (10 * 60 * 1000).toLong()
         private val LOGGER = LoggerFactory.getLogger(CoinMarketScheduler::class.java)
     }
 
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    @Scheduled(fixedDelay = DELAY_VALUE)
     fun updateCoinData() {
         LOGGER.info("Starting task to update coins information and values...")
 

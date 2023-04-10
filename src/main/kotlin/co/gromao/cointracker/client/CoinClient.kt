@@ -1,4 +1,4 @@
-package co.gromao.cointracker.scheduler
+package co.gromao.cointracker.client
 
 import co.gromao.cointracker.scheduler.dto.CoinDto
 import co.gromao.cointracker.scheduler.dto.CoinMarketDto
@@ -6,12 +6,10 @@ import co.gromao.cointracker.scheduler.dto.InformationDto
 import co.gromao.cointracker.scheduler.dto.ValuesDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
