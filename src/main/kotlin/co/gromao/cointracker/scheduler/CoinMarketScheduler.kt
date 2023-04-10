@@ -35,7 +35,7 @@ class CoinMarketScheduler(
         var offset = 0L
 
         while (!isTaskDone) {
-            val coins = repository.fetchByOffsetAndLimit(offset, COINS_LIMIT)
+            val coins = repository.findByOffsetAndLimit(offset, COINS_LIMIT)
 
             if (coins.isNullOrEmpty()) {
                 isTaskDone = true

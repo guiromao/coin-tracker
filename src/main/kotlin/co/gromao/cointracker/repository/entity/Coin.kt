@@ -20,16 +20,16 @@ data class Coin(
     val isActive: Boolean,
 
     @Field(FIELD_VALUE_IN_DOLLARS)
-    val valueInDollars: Double? = 0.0,
+    val valueInDollars: Double? = DEFAULT_PRICE,
 
     @Field(FIELD_CIRCULATING_SUPPLY)
-    val circulatingSupply: Double? = 0.0,
+    val circulatingSupply: Double? = DEFAULT_PRICE,
 
     @Field(FIELD_TOTAL_SUPPLY)
-    val totalSupply: Double? = 0.0,
+    val totalSupply: Double? = DEFAULT_PRICE,
 
     @Field(FIELD_MAX_SUPPLY)
-    val maxSupply: Double? = 0.0,
+    val maxSupply: Double? = DEFAULT_PRICE,
 
     @Field(FIELD_LAST_UPDATED_AT)
     val lastUpdatedAt: Instant? = null
@@ -46,6 +46,7 @@ data class Coin(
         const val FIELD_TOTAL_SUPPLY = "totalSupply"
         const val FIELD_MAX_SUPPLY = "maxSupply"
         const val FIELD_LAST_UPDATED_AT = "lastUpdatedAt"
+        const val DEFAULT_PRICE = 0.0
     }
 
 }

@@ -28,7 +28,7 @@ class CoinRepositoryImpl(
         saveBatchUpdates(dtos)
     }
 
-    override fun fetchByOffsetAndLimit(offset: Long, limit: Int): List<Coin> {
+    override fun findByOffsetAndLimit(offset: Long, limit: Int): List<Coin> {
         val query = Query().skip(offset).limit(limit)
 
         return template.find(query, Coin::class.java)

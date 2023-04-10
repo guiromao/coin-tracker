@@ -10,6 +10,6 @@ interface CoinRepositoryCustom {
 
     fun updateBatchValues(dtos: Set<CoinMarketDto>)
 
-    fun fetchByOffsetAndLimit(offset: Long, limit: Int): List<Coin>
+    fun findByOffsetAndLimit(offset: Long, limit: Int): List<Coin>
 
 }
