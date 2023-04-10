@@ -6,6 +6,7 @@ import co.gromao.cointracker.scheduler.dto.InformationDto
 import co.gromao.cointracker.scheduler.dto.ValuesDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.PropertySource
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -13,16 +14,16 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
-import java.util.*
 
 @Component
+@PropertySource("classpath:client.properties")
 class CoinClient(
     private val restTemplate: RestTemplate,
-    @Value("\${coinclient.baseurl}") private val baseUrl: String,
-    @Value("\${cointclient.authHeader}") private val authHeaderField: String,
-    @Value("\${cointclient.authKey}") private val authKey: String,
-    @Value("\${coinclient.coins-list-path}") private val coinsListPath: String,
-    @Value("\${coinclient.coins-values-path}") private val coinsValuesPath: String
+    @Value("\${baseurl}") private val baseUrl: String,
+    @Value("\${authHeader}") private val authHeaderField: String,
+    @Value("\${authKey}") private val authKey: String,
+    @Value("\${coins-list-path}") private val coinsListPath: String,
+    @Value("\${coins-values-path}") private val coinsValuesPath: String
 ) {
 
     companion object {

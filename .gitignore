@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Sensitive data ###
-src/main/resources/application.properties
+src/main/resources/client.properties
