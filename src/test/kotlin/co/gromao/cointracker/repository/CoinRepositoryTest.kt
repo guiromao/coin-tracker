@@ -46,7 +46,7 @@ class CoinRepositoryTest: AbstractIntegrationTest() {
     fun `should update batch of CoinMarketDtos`() {
         val coinMarketDtos = setOf(
             createMarketDto(1, "BTC", 30000.2),
-            createMarketDto(2, "ETC", 2200.5)
+            createMarketDto(2, "ETH", 2200.5)
         )
 
         repository.updateBatchValues(coinMarketDtos)
