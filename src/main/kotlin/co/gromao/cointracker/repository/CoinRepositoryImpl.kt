@@ -3,6 +3,9 @@ package co.gromao.cointracker.repository
 import co.gromao.cointracker.repository.entity.Coin
 import co.gromao.cointracker.scheduler.dto.CoinDto
 import co.gromao.cointracker.scheduler.dto.CoinMarketDto
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Sort.Order
 import org.springframework.data.mongodb.core.BulkOperations
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -30,6 +33,16 @@ class CoinRepositoryImpl(
 
     override fun findByOffsetAndLimit(offset: Long, limit: Int): List<Coin> {
         val query = Query().skip(offset).limit(limit)
+
+        return template.find(query, Coin::class.java)
+    }
+
+    override fun findByPageable(pageable: Pageable): List<Coin> {
+        val sortItem = pageable.sort.first()
+        val query = Query()
+            .skip((pageable.pageNumber * pageable.pageSize).toLong())
+            .limit(pageable.pageSize)
+            .with(Sort.by(Order(sortItem.direction, sortItem.property)))
 
         return template.find(query, Coin::class.java)
     }

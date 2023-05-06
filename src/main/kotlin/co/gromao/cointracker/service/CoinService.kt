@@ -4,6 +4,7 @@ import co.gromao.cointracker.controller.model.CoinDto
 import co.gromao.cointracker.exception.ResourceNotFoundException
 import co.gromao.cointracker.mapper.CoinMapper
 import co.gromao.cointracker.repository.CoinRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,6 +15,11 @@ class CoinService(private val coinRepository: CoinRepository) {
             ?: throw ResourceNotFoundException("Coin with symbol $symbol not found")
 
         return CoinMapper.mapToDto(coin)
+    }
+
+    fun getCoinsList(pageable: Pageable): List<CoinDto> {
+        return coinRepository.findByPageable(pageable)
+            .map { CoinMapper.mapToDto(it) }
     }
 
 }
