@@ -11,6 +11,7 @@ data class Coin(
     @Id
     val id: Long,
 
+    @Field(FIELD_SYMBOL)
     val symbol: String,
 
     @Field(FIELD_NAME)

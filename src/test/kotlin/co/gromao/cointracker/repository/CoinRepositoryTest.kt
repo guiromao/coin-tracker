@@ -8,6 +8,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import java.time.Instant
 
 class CoinRepositoryTest: AbstractIntegrationTest() {
@@ -68,6 +71,38 @@ class CoinRepositoryTest: AbstractIntegrationTest() {
         val test = repository.findByOffsetAndLimit(0, 10)
 
         Assertions.assertEquals(10, test.size)
+    }
+
+    @Test
+    fun `should find by coin symbol`() {
+        val coin1 = Coin(1L, "SYMBOL-1", "Coin 1", true)
+        val coin2 = Coin(2L, "SYMBOL-2", "Coin 2", true)
+        val coin3 = Coin(3L, "SYMBOL-3", "Coin 3", true)
+
+        repository.saveAll(setOf(coin1, coin2, coin3))
+
+        val result = repository.findBySymbol("SYMBOL-1")
+
+        Assertions.assertNotNull(result)
+        Assertions.assertEquals(coin1, result)
+    }
+
+    @Test
+    fun `should find paged results`() {
+        val coins = (1..50).map {
+            Coin(it.toLong(), "SYMBOL-$it", "Coin $it", true, circulatingSupply = it.toDouble())
+        }
+        val pageable = PageRequest.of(0, 10, Sort.by(Coin.FIELD_CIRCULATING_SUPPLY).descending())
+
+        repository.saveAll(coins)
+
+        val result = repository.findByPageable(pageable)
+
+        Assertions.assertEquals(10, result.size)
+        Assertions.assertEquals(
+            (50 downTo 41).map { it.toDouble() },
+            result.map { it.circulatingSupply }
+        )
     }
 
     private fun createMarketDto(id: Long, symbol: String, dollarValue: Double): CoinMarketDto =
